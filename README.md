@@ -81,3 +81,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 # models
     php artisan migrate
     php artisan make:model -mrc Chirp
+    php artisan tinker
