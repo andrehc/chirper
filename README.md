@@ -72,6 +72,12 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 # 2 configurar o banco
 
-# 3 instalar laravel breeze
+# 3 instalar laravel breeze & node
     composer require laravel/breeze --dev
     php artisan breeze:install vue
+    choco install nodejs -y
+    instalacao do vite
+
+# models
+    php artisan migrate
+    php artisan make:model -mrc Chirp
