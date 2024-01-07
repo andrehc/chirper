@@ -23,7 +23,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <span class="text-gray-800">{{ chirp.user.name }}</span>
-                    <small class="ml-2 text-sm text-gray-600">{{ dayjs(chirp.created_at).fromNow() }}</small>
+                    <small class="ml-2 text-sm text-gray-600" v-if="chirp.updated_at !== null ? timestamp = chirp.updated_at : timestamp = chirp.created_at">{{ dayjs(timestamp).fromNow() }}</small>
                     <small v-if="chirp.created_at !== chirp.updated_at" class="text-sm text-gray-600"> &middot; edited</small>
                 </div>
                 <Dropdown v-if="chirp.user.id === $page.props.auth.user.id">
