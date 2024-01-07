@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chirp;
+use Exception;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
@@ -34,9 +36,7 @@ class ChirpController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'message' => 'required|string|max:255',
-        ]);
+        $validated = $this->requiredMessageValid($request);
 
         $request->user()->chirps()->create($validated);
 
@@ -62,9 +62,13 @@ class ChirpController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chirp $chirp)
+    public function update(Request $request, Chirp $chirp): RedirectResponse
     {
-        //
+        $validated = $this->requiredMessageValid($request);
+
+        $chirp->update($validated);
+
+        return redirect(route('chirps.index'));
     }
 
     /**
@@ -73,5 +77,18 @@ class ChirpController extends Controller
     public function destroy(Chirp $chirp)
     {
         //
+    }
+
+    protected function requiredMessageValid($request)
+    {
+        try {
+            $validated = $request->validate([
+                'message' => 'required|string|max:255'
+            ]);
+
+            return $validated;
+        } catch (\Throwable $th) {
+            return response()->json(['errors' => $th], 422);
+        }
     }
 }
